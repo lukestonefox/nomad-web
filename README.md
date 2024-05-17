@@ -2,6 +2,10 @@
 Austin Schoster, Lucas Fox, Logan Muhlen, Thomas Turner, Ary Sharma
 (ChatGPT Warriors)
 
+# About
+
+Nomad web app currently is built using: Vite, React, and TypeScript. C# may be used for the backend. MaterialUI may be used for the UI components.
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
