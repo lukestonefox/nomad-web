@@ -34,11 +34,13 @@ export const fetchHotels = async (location: string): Promise<HotelData[]> => {
       const photoReference = hotel.photos && hotel.photos.length > 0 ? hotel.photos[0].photo_reference : '';
       const imageUrl = photoReference ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${API_KEY}` : '';
 
+      const rating = hotel.rating ? hotel.rating : 0; // Fallback in case a hotel does not having a rating
+
       return {
         imageUrl,
         name: hotel.name,
         vicinity: hotel.vicinity,
-        rating: hotel.rating
+        rating
       };
     });
 
@@ -50,27 +52,73 @@ export const fetchHotels = async (location: string): Promise<HotelData[]> => {
 };
   
 export const fetchActivities = async (location: string) => {
-  const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
-    params: {
-      location,
-      radius: 5000,
-      type: 'tourist_attraction',
-      key: API_KEY,
-    },
-  });
-  return response.data.results;
+  try {
+    const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
+      params: {
+        location,
+        radius: 5000,
+        type: 'tourist_attraction',
+        key: API_KEY,
+      },
+    });
+  
+    const data = await response.data.results;
+    console.log('Fetched Activities:', data);
+  
+    const activities = data.map((activity: any) => {
+      const photoReference = activity.photos && activity.photos.length > 0 ? activity.photos[0].photo_reference : '';
+      const imageUrl = photoReference ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${API_KEY}` : '';
+  
+      const rating = activity.rating ? activity.rating : 0; // Fallback in case an activity does not having a rating
+
+      return {
+        imageUrl,
+        name: activity.name,
+        vicinity: activity.vicinity,
+        rating
+      };
+    })
+  
+    return activities;
+  } catch (error) {
+    console.error('Error fetching activities:', error);
+    return [];
+  }
 };
   
-export const fetchPlaces = async (location: string) => {
-  const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
-    params: {
-      location,
-      radius: 5000,
-      type: 'point_of_interest',
-      key: API_KEY,
-    },
-  });
-  return response.data.results;
+export const fetchPlaces = async (location: string) => { 
+  try {
+    const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
+      params: {
+        location,
+        radius: 5000,
+        type: 'point_of_interest',
+        key: API_KEY,
+      },
+    });
+  
+    const data = await response.data.results;
+    console.log('Fetched Places:', data);
+
+    const places = data.map((place: any) => {
+      const photoReference = place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : '';
+      const imageUrl = photoReference ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${API_KEY}` : '';
+  
+      const rating = place.rating ? place.rating : 0; // Fallback in case a place does not having a rating
+
+      return {
+        imageUrl,
+        name: place.name,
+        vicinity: place.vicinity,
+        rating
+      };
+    })
+  
+    return places;
+  } catch (error) {
+    console.error('Error fetching places:', error);
+    return [];
+  }
 };
   
 export const getCoordinates = async (location: string) => {

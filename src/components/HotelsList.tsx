@@ -19,11 +19,14 @@ const ListContainer = styled.div`
 
 const HotelsList: React.FC<HotelsListProps> = ({ hotels }) => {
   return (
-    <ListContainer>
-      {hotels.map((hotel, index) => (
-        <HotelCard key={index} hotel={hotel} />
-      ))}
-    </ListContainer>
+    <div>
+      <h2>Hotels</h2>
+      <ListContainer>
+        {hotels.map((hotel, index) => (
+          <HotelCard key={index} hotel={hotel} />
+        ))}
+      </ListContainer>
+    </div>
   );
 };
 
