@@ -4,7 +4,7 @@ Austin Schoster, Lucas Fox, Logan Muhlen, Thomas Turner, Ary Sharma
 
 # About
 
-Nomad web app currently is built using: Vite, React, and TypeScript. C# may be used for the backend. MaterialUI may be used for the UI components.
+Nomad web app currently is built using: Vite, React, and TypeScript. MaterialUI and TailwindCSS will be used for the UI components.
 
 # React + TypeScript + Vite
 
