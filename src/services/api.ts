@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { HotelData } from '../types';
-
-const API_KEY = 'AIzaSyAYfyGWY6UShwkcFMKT8XbhENeVNt6Gj0s';
+import { API_KEY } from '../apiKey';
 
 // export const fetchHotels = async (location: string) => {
 //     const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
