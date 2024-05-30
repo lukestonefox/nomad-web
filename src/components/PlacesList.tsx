@@ -1,20 +1,31 @@
 import React from 'react';
+import styled from 'styled-components';
+import PlaceCard from './PlaceCard';
 
 interface PlacesListProps {
-  places: Array<{ name: string, address: string }>;
+  places: {
+    imageUrl: string;
+    name: string;
+    vicinity: string;
+    rating: number;
+  }[];
 }
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
   return (
     <div>
       <h2>Places to See</h2>
-      <ul>
+      <ListContainer>
         {places.map((place, index) => (
-          <li key={index}>
-            {place.name} - {place.address}
-          </li>
+          <PlaceCard key={index} place={place} />
         ))}
-      </ul>
+      </ListContainer>
     </div>
   );
 };

@@ -34,7 +34,7 @@ const CardContent = styled.div`
 const CardTitle = styled.h3`
   margin: 0;
   font-size: 1.2em;
-  color: #333;
+  color: #fff;
 `;
 
 const CardAddress = styled.p`
@@ -51,13 +51,15 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   const defaultImage = 'https://via.placeholder.com/300x200'; // Default image URL
   const imageUrl = hotel.imageUrl || defaultImage;
 
+  const rating = hotel.rating > 0 ? `Rating: ${hotel.rating} / 5` : 'No Rating'
+
   return (
     <Card>
       <CardImage src={imageUrl} alt={hotel.name} />
       <CardContent>
         <CardTitle>{hotel.name}</CardTitle>
         <CardAddress>{hotel.vicinity}</CardAddress>
-        <CardRating>Rating: {hotel.rating} / 5</CardRating>
+        <CardRating>{rating}</CardRating>
       </CardContent>
     </Card>
   );

@@ -1,20 +1,31 @@
 import React from 'react';
+import styled from 'styled-components';
+import ActivityCard from './ActivityCard';
 
 interface ActivitiesListProps {
-  activities: Array<{ name: string, description: string }>;
+  activities: {
+    imageUrl: string;
+    name: string;
+    vicinity: string;
+    rating: number;
+  }[];
 }
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities }) => {
   return (
     <div>
       <h2>Activities</h2>
-      <ul>
+      <ListContainer>
         {activities.map((activity, index) => (
-          <li key={index}>
-            {activity.name} - {activity.description}
-          </li>
+          <ActivityCard key={index} activity={activity} />
         ))}
-      </ul>
+      </ListContainer>
     </div>
   );
 };
