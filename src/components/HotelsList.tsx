@@ -1,21 +1,29 @@
 import React from 'react';
+import styled from 'styled-components';
+import HotelCard from './HotelCard';
 
 interface HotelsListProps {
-  hotels: Array<{ name: string, address: string }>;
+  hotels: {
+    imageUrl: string;
+    name: string;
+    vicinity: string;
+    rating: number;
+  }[];
 }
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+`;
 
 const HotelsList: React.FC<HotelsListProps> = ({ hotels }) => {
   return (
-    <div>
-      <h2>Hotels</h2>
-      <ul>
-        {hotels.map((hotel, index) => (
-          <li key={index}>
-            {hotel.name} - {hotel.address}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ListContainer>
+      {hotels.map((hotel, index) => (
+        <HotelCard key={index} hotel={hotel} />
+      ))}
+    </ListContainer>
   );
 };
 

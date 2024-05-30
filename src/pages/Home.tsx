@@ -1,15 +1,29 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import LocationSelector from '../components/LocationSelector';
 import HotelsList from '../components/HotelsList';
 import ActivitiesList from '../components/ActivitiesList';
 import PlacesList from '../components/PlacesList';
 import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
+import { HotelData } from '../types'; // Import the types
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+const ListsContainer = styled.div`
+  width: 80%;
+  margin-top: 20px;
+`;
 
 const Home: React.FC = () => {
-  const [hotels, setHotels] = useState([]);
-  const [activities, setActivities] = useState([]);
-  const [places, setPlaces] = useState([]);
+  const [hotels, setHotels] = useState<HotelData[]>([]); // Specify the type for hotels
+  const [activities, setActivities] = useState([]); // You should also specify the type if needed
+  const [places, setPlaces] = useState([]); // You should also specify the type if needed
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({ lat: 40.7128, lng: -74.0060 }); // Default to NYC
   const [map, setMap] = useState<google.maps.Map | null>(null);
 
@@ -33,15 +47,15 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div>
+    <Container>
       <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
       <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-      <div>
+      <ListsContainer>
         <HotelsList hotels={hotels} />
         <ActivitiesList activities={activities} />
         <PlacesList places={places} />
-      </div>
-    </div>
+      </ListsContainer>
+    </Container>
   );
 };
 
