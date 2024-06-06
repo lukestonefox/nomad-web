@@ -9,6 +9,7 @@ interface PlacesListProps {
     vicinity: string;
     rating: number;
   }[];
+  id?: string;
 }
 
 const ListContainer = styled.div`
@@ -17,9 +18,9 @@ const ListContainer = styled.div`
   justify-content: center;
 `;
 
-const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
+const PlacesList: React.FC<PlacesListProps> = ({ places, id }) => {
   return (
-    <div>
+    <div id={id}>
       <h2>Places to See</h2>
       <ListContainer>
         {places.map((place, index) => (

@@ -3,10 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
 
-const SidebarContainer = styled.div<{ visible: boolean }>`
+const SidebarContainer = styled.div<{ visible: boolean, navigationBarHeight: number }>`
   position: fixed;
   right: 0;
-  top: 0;
+  top: ${({navigationBarHeight}) => navigationBarHeight + 10}px;
   height: 100%;
   width: 300px;
   background-color: #f4f4f4;
@@ -24,9 +24,10 @@ const StarredItem = styled.li`
 
 const Sidebar: React.FC = () => {
   const { starredItems } = useStarred();
+  const navigationBarHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
 
   return (
-    <SidebarContainer visible={starredItems.length > 0}>
+    <SidebarContainer visible={starredItems.length > 0} navigationBarHeight={navigationBarHeight}>
       <h2>Starred Items</h2>
       <ul>
         {starredItems.map((item, index) => (
