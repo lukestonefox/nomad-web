@@ -6,7 +6,9 @@ import HotelsList from '../components/HotelsList';
 import ActivitiesList from '../components/ActivitiesList';
 import PlacesList from '../components/PlacesList';
 import MapComponent from '../components/MapComponent';
-import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
+// import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
+import { fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
+import { fetchHotels } from '../services/AmadeusAPI'; // Import fetchHotels from AmadeusAPI file
 import { HotelData } from '../types'; // Import the types
 import { useStarred } from '../components/StarredContext';
 

@@ -11,6 +11,7 @@ interface HotelCardProps {
     name: string;
     vicinity: string;
     rating: number;
+    price: string;
   };
 }
 
@@ -51,6 +52,11 @@ const CardRating = styled.p`
   color: #f39c12;
 `;
 
+const CardPrice = styled.p`
+  margin: 8px 0;
+  color: #2ecc71;
+`;
+
 const StarIconContainer = styled.div`
   position: absolute;
   top: 10px;
@@ -89,6 +95,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
         <CardTitle>{hotel.name}</CardTitle>
         <CardAddress>{hotel.vicinity}</CardAddress>
         <CardRating>{rating}</CardRating>
+        <CardPrice>{hotel.price}</CardPrice>
       </CardContent>
     </Card>
   );

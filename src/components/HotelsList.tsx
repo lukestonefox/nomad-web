@@ -8,6 +8,7 @@ interface HotelsListProps {
     name: string;
     vicinity: string;
     rating: number;
+    price: string;
   }[];
 }
 
