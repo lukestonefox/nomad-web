@@ -26,12 +26,13 @@ const Sidebar: React.FC = () => {
   const { starredItems } = useStarred();
 
   return (
-    <SidebarContainer visible={starredItems.length > 0}>
-      <h2>Starred Items</h2>
-      <ul>
+    <SidebarContainer visible={starredItems.length > 0} className='flex flex-col items-center'>
+      <h2 className='text-xl font-bold mb-4'>Starred Items</h2>
+      <ul className='flex flex-col items-center'>
         {starredItems.map((item, index) => (
-            <StarredItem key = {index}>
+            <StarredItem key = {index} className=''>
                 <h3>{item.name}</h3>
+                <div>{item.whatever}</div>
                 <p>{item.vicinity}</p>
             </StarredItem>
         ))}
