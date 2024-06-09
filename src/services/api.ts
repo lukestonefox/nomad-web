@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { HotelData } from '../types';
 import { API_KEY } from '../apiKey';
+import { fetchHotelPrices } from './amadeus-api';
 
 // export const fetchHotels = async (location: string) => {
 //     const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
@@ -36,6 +37,14 @@ export const fetchHotels = async (location: string): Promise<HotelData[]> => {
 
       const rating = hotel.rating ? hotel.rating : 0; // Fallback in case a hotel does not having a rating
 
+      // sending fetchHotelPrices() unique lat/long for each hotel
+      const priceObj = fetchHotelPrices(hotel.geometry.location.lat, hotel.geometry.location.lng);
+      let price;
+      priceObj.then((hotelPrice: number) => {
+        price = hotelPrice;
+        console.log(`price of hotel: ${price}`);
+      })
+      
       return {
         imageUrl,
         name: hotel.name,
@@ -63,7 +72,7 @@ export const fetchActivities = async (location: string) => {
     });
   
     const data = await response.data.results;
-    console.log('Fetched Activities:', data);
+    // console.log('Fetched Activities:', data);
   
     const activities = data.map((activity: any) => {
       const photoReference = activity.photos && activity.photos.length > 0 ? activity.photos[0].photo_reference : '';
@@ -98,7 +107,7 @@ export const fetchPlaces = async (location: string) => {
     });
   
     const data = await response.data.results;
-    console.log('Fetched Places:', data);
+    // console.log('Fetched Places:', data);
 
     const places = data.map((place: any) => {
       const photoReference = place.photos && place.photos.length > 0 ? place.photos[0].photo_reference : '';
