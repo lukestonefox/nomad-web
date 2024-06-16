@@ -1,7 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useStarred } from './StarredContext';
 
 interface PlaceCardProps {
@@ -37,7 +35,7 @@ const CardContent = styled.div`
 const CardTitle = styled.h3`
   margin: 0;
   font-size: 1.2em;
-  color: #fff;
+  color: #333;
 `;
 
 const CardAddress = styled.p`
@@ -50,19 +48,19 @@ const CardRating = styled.p`
   color: #f39c12;
 `;
 
-const StarIconContainer = styled.div`
+const StarButton = styled.button<{ starred: boolean }>`
+  background-color: ${props => (props.starred ? '#ffcc00' : '#ccc')};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
   position: absolute;
   top: 10px;
   right: 10px;
-  cursor: pointer;
-`;
-
-const StarIcon = styled(FontAwesomeIcon)<{ starred: boolean }>`
-  color: ${props => (props.starred ? 'gold' : 'gray')};
-  font-size: 1.5em;
-  stroke: black; /* Border color */
-  stroke-width: 20px; /* Border thickness */
-  stroke-opacity: 1; /* Ensure the border is fully opaque */
+  &:hover {
+    background-color: ${props => (props.starred ? '#ffb700' : '#999')};
+  }
 `;
 
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
@@ -81,9 +79,9 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
   return (
     <Card>
       <CardImage src={imageUrl} alt={place.name} />
-      <StarIconContainer onClick={handleToggleStar}>
-        <StarIcon icon={faStar} starred={isStarred} />
-      </StarIconContainer>
+      <StarButton starred={isStarred} onClick={handleToggleStar}>
+        {isStarred ? 'Unadd' : 'Add to Trip'}
+      </StarButton>
       <CardContent>
         <CardTitle>{place.name}</CardTitle>
         <CardAddress>{place.vicinity}</CardAddress>
@@ -94,4 +92,3 @@ const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
 };
   
   export default PlaceCard;
-  
