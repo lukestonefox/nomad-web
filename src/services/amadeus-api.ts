@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AMADEUS_API_KEY, AMADEUS_API_SECRET } from '../apiKey';
 
 // Uses your Amadeus API key and secret to fetch access token
-const fetchAccessToken = async (): Promise<string> => {
+export const fetchAccessToken = async (): Promise<string> => {
   try {
     const clientId = AMADEUS_API_KEY;
     const clientSecret = AMADEUS_API_SECRET;
@@ -35,18 +35,17 @@ const fetchAccessToken = async (): Promise<string> => {
   
   
 // Takes in lat/long for a hotel and returns price of hotel (or 0 if price of hotel is not found)
-export const fetchHotelPrices = async (lat: number, lng: number): Promise<number> => {
+export const fetchHotelPrices = async (location: any, accessToken: any): Promise<number> => {
   try {
-    const accessToken = await fetchAccessToken();
-  
+      
     // This API is used to get the hotelID using the latitude and longitude
     const hotelResponse = await axios.get('/amadeus-api/v1/reference-data/locations/hotels/by-geocode', {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       },
       params: {
-        latitude: lat,
-        longitude: lng
+        latitude: location.lat,
+        longitude: location.lng
       }
     });
     const hotelID = hotelResponse.data.data[0].hotelId;
@@ -70,7 +69,7 @@ export const fetchHotelPrices = async (lat: number, lng: number): Promise<number
     
   } catch (error: any) {
   if (error.response.status === 400 || axios.isAxiosError(error)) {
-    console.log(`Price for hotel in ${lat},${lng} not found`);
+    console.log(`Price for hotel in ${location.lat},${location.lng} not found`);
   }
     return 0;
   }

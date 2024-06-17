@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { HotelData } from '../types';
 import { API_KEY } from '../apiKey';
-import { fetchHotelPrices } from './amadeus-api';
+import { fetchAccessToken, fetchHotelPrices } from './amadeus-api';
 
 // export const fetchHotels = async (location: string) => {
 //     const response = await axios.get(`/api/maps/api/place/nearbysearch/json`, {
@@ -31,6 +31,7 @@ export const fetchHotels = async (location: string): Promise<HotelData[]> => {
 
     console.log('Fetched Hotels:', data);
 
+    const accessToken = await fetchAccessToken();
     const hotels = data.map((hotel: any) => {
       const photoReference = hotel.photos && hotel.photos.length > 0 ? hotel.photos[0].photo_reference : '';
       const imageUrl = photoReference ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photoReference}&key=${API_KEY}` : '';
@@ -38,7 +39,7 @@ export const fetchHotels = async (location: string): Promise<HotelData[]> => {
       const rating = hotel.rating ? hotel.rating : 0; // Fallback in case a hotel does not having a rating
 
       // sending fetchHotelPrices() unique lat/long for each hotel
-      const priceObj = fetchHotelPrices(hotel.geometry.location.lat, hotel.geometry.location.lng);
+      const priceObj = fetchHotelPrices(hotel.geometry.location, accessToken);
       let price;
       priceObj.then((hotelPrice: number) => {
         price = hotelPrice;
