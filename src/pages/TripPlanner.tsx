@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
 const TripPlannerContainer = styled.div`
   padding: 20px;
@@ -12,6 +11,9 @@ const TripPlannerContainer = styled.div`
 
 const DateRangeContainer = styled.div`
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
 `;
 
 const KanbanContainer = styled.div`
@@ -107,10 +109,20 @@ const SidebarItemDetails = styled.p`
   color: #777;
 `;
 
+const DaySelect = styled.select`
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+`;
+
 const TripPlanner: React.FC = () => {
   const { starredItems } = useStarred();
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
+  const [plannedItems, setPlannedItems] = useState<{ [key: string]: any[] }>({});
 
   const calculateDays = () => {
     if (startDate && endDate) {
@@ -127,8 +139,13 @@ const TripPlanner: React.FC = () => {
 
   const days = calculateDays();
 
-  const onDragEnd = (result: any) => {
-    // Handle the drag and drop logic here
+  const handleDaySelect = (item: any, day: string) => {
+    const newPlannedItems = { ...plannedItems };
+    if (!newPlannedItems[day]) {
+      newPlannedItems[day] = [];
+    }
+    newPlannedItems[day].push(item);
+    setPlannedItems(newPlannedItems);
   };
 
   return (
@@ -157,36 +174,21 @@ const TripPlanner: React.FC = () => {
         />
       </DateRangeContainer>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <KanbanContainer>
-            {days.map((day, index) => (
-              <Droppable key={index} droppableId={day}>
-                {(provided) => (
-                  <DayColumn ref={provided.innerRef} {...provided.droppableProps}>
-                    <ColumnTitle>{day}</ColumnTitle>
-                    {starredItems.map((item, idx) => (
-                      <Draggable key={item.name} draggableId={item.name} index={idx}>
-                        {(provided) => (
-                          <ItemCard
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
-                            <ItemTitle>{item.name}</ItemTitle>
-                            <ItemDetails>{item.vicinity}</ItemDetails>
-                            <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
-                          </ItemCard>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </DayColumn>
-                )}
-              </Droppable>
-            ))}
-          </KanbanContainer>
-        </DragDropContext>
+        <KanbanContainer>
+          {days.map((day, index) => (
+            <DayColumn key={index}>
+              <ColumnTitle>{day}</ColumnTitle>
+              {(plannedItems[day] || []).map((item, idx) => (
+                <ItemCard key={idx}>
+                  <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
+                  <ItemTitle>{item.name}</ItemTitle>
+                  <ItemDetails>{item.vicinity}</ItemDetails>
+                  <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
+                </ItemCard>
+              ))}
+            </DayColumn>
+          ))}
+        </KanbanContainer>
         <SidebarContainer>
           <h2>Starred Items</h2>
           {starredItems.map((item, index) => (
@@ -195,6 +197,14 @@ const TripPlanner: React.FC = () => {
               <SidebarItemTitle>{item.name}</SidebarItemTitle>
               <SidebarItemDetails>{item.vicinity}</SidebarItemDetails>
               <SidebarItemDetails>Rating: {item.rating} / 5</SidebarItemDetails>
+              <DaySelect onChange={(e) => handleDaySelect(item, e.target.value)}>
+                <option value="">Select a day</option>
+                {days.map((day, idx) => (
+                  <option key={idx} value={day}>
+                    {day}
+                  </option>
+                ))}
+              </DaySelect>
             </SidebarItem>
           ))}
         </SidebarContainer>
