@@ -17,7 +17,10 @@
     "@types/styled-components": "^5.1.34",
     "amadeus": "^10.0.0",
     "axios": "^1.7.2",
+    "moment": "^2.30.1",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-datepicker": "^7.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
     "styled-components": "^6.1.11"
@@ -25,6 +28,7 @@
   "devDependencies": {
     "@types/node": "^20.14.2",
     "@types/react": "^18.2.66",
+    "@types/react-beautiful-dnd": "^13.1.8",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",

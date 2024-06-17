@@ -7,8 +7,8 @@ import ActivitiesList from '../components/ActivitiesList';
 import PlacesList from '../components/PlacesList';
 import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
-import { HotelData } from '../types'; // Import the types
 import { useStarred } from '../components/StarredContext';
+import { useMap } from '../components/MapContext'; // Import useMap
 
 const Container = styled.div<{ sidebarVisible: boolean }>`
   display: flex;
@@ -25,12 +25,9 @@ const ListsContainer = styled.div`
 `;
 
 const Home: React.FC = () => {
-  const [hotels, setHotels] = useState<HotelData[]>([]);
-  const [activities, setActivities] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number }>({ lat: 40.7128, lng: -74.0060 });
-  const [map, setMap] = useState<google.maps.Map | null>(null);
   const { starredItems } = useStarred(); // Access starred items from context
+  const { coordinates, setCoordinates, hotels, setHotels, activities, setActivities, places, setPlaces } = useMap(); // Use values from MapContext
+  const [map, setMap] = useState<google.maps.Map | null>(null);
 
   const handleSelectLocation = async (location: string) => {
     try {
