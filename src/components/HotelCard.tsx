@@ -1,8 +1,6 @@
 // src/components/HotelCard.tsx
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { useStarred } from './StarredContext';
 
 interface HotelCardProps {
@@ -38,7 +36,7 @@ const CardContent = styled.div`
 const CardTitle = styled.h3`
   margin: 0;
   font-size: 1.2em;
-  color: #fff;
+  color: #333;
 `;
 
 const CardAddress = styled.p`
@@ -51,19 +49,19 @@ const CardRating = styled.p`
   color: #f39c12;
 `;
 
-const StarIconContainer = styled.div`
+const StarButton = styled.button<{ starred: boolean }>`
+  background-color: ${props => (props.starred ? '#ffcc00' : '#ccc')};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
   position: absolute;
   top: 10px;
   right: 10px;
-  cursor: pointer;
-`;
-
-const StarIcon = styled(FontAwesomeIcon)<{ starred: boolean }>`
-  color: ${props => (props.starred ? 'gold' : 'gray')};
-  font-size: 1.5em;
-  stroke: black; /* Border color */
-  stroke-width: 20px; /* Border thickness */
-  stroke-opacity: 1; /* Ensure the border is fully opaque */
+  &:hover {
+    background-color: ${props => (props.starred ? '#ffb700' : '#999')};
+  }
 `;
 
 const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
@@ -82,9 +80,9 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   return (
     <Card>
       <CardImage src={imageUrl} alt={hotel.name} />
-      <StarIconContainer onClick={handleToggleStar}>
-        <StarIcon icon={faStar} starred={isStarred} />
-      </StarIconContainer>
+      <StarButton starred={isStarred} onClick={handleToggleStar}>
+        {isStarred ? 'Unadd' : 'Add to Trip'}
+      </StarButton>
       <CardContent>
         <CardTitle>{hotel.name}</CardTitle>
         <CardAddress>{hotel.vicinity}</CardAddress>

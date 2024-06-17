@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useStarred } from './StarredContext';
 
 interface PlaceCardProps {
     place: {
@@ -17,6 +18,7 @@ const Card = styled.div`
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin: 16px;
+  position: relative;
 `;
 
 const CardImage = styled.img`
@@ -33,7 +35,7 @@ const CardContent = styled.div`
 const CardTitle = styled.h3`
   margin: 0;
   font-size: 1.2em;
-  color: #fff;
+  color: #333;
 `;
 
 const CardAddress = styled.p`
@@ -46,23 +48,47 @@ const CardRating = styled.p`
   color: #f39c12;
 `;
 
+const StarButton = styled.button<{ starred: boolean }>`
+  background-color: ${props => (props.starred ? '#ffcc00' : '#ccc')};
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  &:hover {
+    background-color: ${props => (props.starred ? '#ffb700' : '#999')};
+  }
+`;
+
 const PlaceCard: React.FC<PlaceCardProps> = ({ place }) => {
-    const defaultImage = 'https://via.placeholder.com/300x200'; // Default image URL
-    const imageUrl = place.imageUrl || defaultImage;
+  const { starredItems, toggleStarredItem } = useStarred();
+  const isStarred = starredItems.some(item => item.name === place.name);
 
-    const rating = place.rating > 0 ? `Rating: ${place.rating} / 5` : 'No Rating'
-
-    return (
-      <Card>
-        <CardImage src={imageUrl} alt={place.name} />
-        <CardContent>
-          <CardTitle>{place.name}</CardTitle>
-          <CardAddress>{place.vicinity}</CardAddress>
-          <CardRating>{rating}</CardRating>
-        </CardContent>
-      </Card>
-    );
+  const handleToggleStar = () => {
+    toggleStarredItem(place);
   };
+
+  const defaultImage = 'https://via.placeholder.com/300x200'; // Default image URL
+  const imageUrl = place.imageUrl || defaultImage;
+
+  const rating = place.rating > 0 ? `Rating: ${place.rating} / 5` : 'No Rating'
+
+  return (
+    <Card>
+      <CardImage src={imageUrl} alt={place.name} />
+      <StarButton starred={isStarred} onClick={handleToggleStar}>
+        {isStarred ? 'Unadd' : 'Add to Trip'}
+      </StarButton>
+      <CardContent>
+        <CardTitle>{place.name}</CardTitle>
+        <CardAddress>{place.vicinity}</CardAddress>
+        <CardRating>{rating}</CardRating>
+      </CardContent>
+    </Card>
+  );
+};
   
   export default PlaceCard;
-  
