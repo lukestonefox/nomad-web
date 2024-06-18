@@ -49,7 +49,7 @@ export const fetchHotelPrices = async (location: any, accessToken: any): Promise
       }
     });
     const hotelID = hotelResponse.data.data[0].hotelId;
-    console.log("hotelID:", hotelID); 
+    // console.log("hotelID:", hotelID); 
   
     // This API is used to get the price of a hotel using its hotelID and other parameters
     const priceResponse = await axios.get('/amadeus-api/v3/shopping/hotel-offers', { // issue here is that the Amadeus server is getting too many requests too soon. Throws Error 429
@@ -60,7 +60,7 @@ export const fetchHotelPrices = async (location: any, accessToken: any): Promise
         hotelIds: hotelID,
         adults: "2",
         checkInDate: '2024-12-07', 
-        checkOutDate:'2024-12-08'
+        checkOutDate:'2024-12-10'
       }
     })
     const hotelPrice = priceResponse.data.data[0].offers[0].price.total;
