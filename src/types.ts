@@ -4,5 +4,6 @@ export interface HotelData {
     name: string;
     vicinity: string;
     rating: number;
+    price: number;
   }
   

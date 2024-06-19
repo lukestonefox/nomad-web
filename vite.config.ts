@@ -10,7 +10,12 @@ export default defineConfig({
         target: 'https://maps.googleapis.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
-      }
+      },
+      '/amadeus-api': {
+        target: 'https://test.api.amadeus.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/amadeus-api/, '')
+      },
     }
   }
 })
