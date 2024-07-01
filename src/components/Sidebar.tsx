@@ -26,6 +26,8 @@ const StarredItem = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  min-width: 260px;
+  max-width: 260px;
   margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 8px;

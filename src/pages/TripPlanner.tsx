@@ -1,214 +1,148 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useStarred } from '../components/StarredContext';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
+import { Link } from 'react-router-dom';
+import Column from '../components/Column';
+import BucketColumn from '../components/BucketColumn';
+import { DragItem } from '../types';
 
 const TripPlannerContainer = styled.div`
+  display: flex;
+  height: 100vh;
+`;
+
+const LeftSidebar = styled.div`
+  width: 20%;
+  background-color: #f8f9fa;
   padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 `;
 
-const DateRangeContainer = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: space-between;
-  width: 600px;
-`;
-
-const KanbanContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-  width: 100%;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-`;
-
-const DayColumn = styled.div`
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin: 10px;
-  padding: 10px;
-  width: 300px;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ColumnTitle = styled.h2`
-  text-align: center;
-`;
-
-const ItemCard = styled.div`
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-`;
-
-const ItemImage = styled.img`
-  width: 100%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-`;
-
-const ItemTitle = styled.h3`
-  margin: 0;
-  font-size: 1em;
-  color: #333;
-`;
-
-const ItemDetails = styled.p`
-  margin: 8px 0;
-  color: #777;
-`;
-
-const SidebarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  margin-left: 20px;
-`;
-
-const SidebarItem = styled.div`
+const MainContent = styled.div`
+  width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
+`;
+
+const TripPlannerTitle = styled.h1`
+  font-size: 2em;
+  margin-top: 20px;
+`;
+
+const PlannerBoard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-grow: 1;
   width: 100%;
-  margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
 `;
 
-const SidebarItemImage = styled.img`
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-`;
-
-const SidebarItemTitle = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  color: #333;
-`;
-
-const SidebarItemDetails = styled.p`
-  margin: 8px 0;
-  color: #777;
-`;
-
-const DaySelect = styled.select`
+const AddColumnButton = styled.button`
   margin-top: 10px;
-  padding: 5px;
+  padding: 5px 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
   border-radius: 5px;
-  border: 1px solid #ddd;
-  background-color: #fff;
   cursor: pointer;
+  &:hover {
+    background-color: #218838;
+  }
 `;
+
+const BackButton = styled(Link)`
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const LOCAL_STORAGE_KEY = 'tripPlannerState';
+
+const dummyItems: DragItem[] = [
+  { id: 201, content: 'Dummy Item 1', fromBucket: true },
+  { id: 202, content: 'Dummy Item 2', fromBucket: true },
+  { id: 203, content: 'Dummy Item 3', fromBucket: true },
+];
 
 const TripPlanner: React.FC = () => {
-  const { starredItems } = useStarred();
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [plannedItems, setPlannedItems] = useState<{ [key: string]: any[] }>({});
+  const [columns, setColumns] = useState<{ id: number, items: { id: number }[], title: string }[]>(() => {
+    const savedColumns = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return savedColumns ? JSON.parse(savedColumns) : [{ id: 1, items: [], title: "Day 1" }]; // No initial items
+  });
 
-  const calculateDays = () => {
-    if (startDate && endDate) {
-      const days = [];
-      let currentDay = moment(startDate);
-      while (currentDay.isSameOrBefore(endDate)) {
-        days.push(currentDay.format('MMMM Do YYYY'));
-        currentDay = currentDay.add(1, 'days');
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(columns));
+  }, [columns]);
+
+  const addColumn = useCallback(() => {
+    setColumns(columns => [
+      ...columns, 
+      { id: columns.length + 1, items: [], title: `Day ${columns.length + 1}` }
+    ]);
+  }, [columns.length]);
+
+  const removeColumn = useCallback((id: number) => {
+    setColumns(columns => columns.filter(column => column.id !== id));
+  }, []);
+
+  const moveItem = useCallback((dragIndex: number, hoverIndex: number, dragColumnId: number, hoverColumnId: number) => {
+    setColumns(columns => {
+      const newColumns = [...columns];
+      const dragColumn = newColumns.find(column => column.id === dragColumnId);
+      const hoverColumn = newColumns.find(column => column.id === hoverColumnId);
+      if (dragColumn && hoverColumn) {
+        const dragItem = dragColumn.items[dragIndex];
+        dragColumn.items.splice(dragIndex, 1);
+        hoverColumn.items.splice(hoverIndex, 0, dragItem);
       }
-      return days;
-    }
-    return [];
-  };
+      return newColumns;
+    });
+  }, []);
 
-  const days = calculateDays();
-
-  const handleDaySelect = (item: any, day: string) => {
-    const newPlannedItems = { ...plannedItems };
-    if (!newPlannedItems[day]) {
-      newPlannedItems[day] = [];
-    }
-    newPlannedItems[day].push(item);
-    setPlannedItems(newPlannedItems);
-  };
+  const addItemToColumn = useCallback((columnId: number, item: DragItem) => {
+    setColumns(columns => {
+      const newColumns = [...columns];
+      const targetColumn = newColumns.find(column => column.id === columnId);
+      if (targetColumn) {
+        targetColumn.items.push(item);  // Add the item with all properties
+      }
+      return newColumns;
+    });
+  }, []);
 
   return (
     <TripPlannerContainer>
-      <h1>Trip Planner</h1>
-      <DateRangeContainer>
-        <DatePicker
-          selected={startDate}
-          onChange={(date: Date | null) => setStartDate(date)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          minDate={new Date()}
-          placeholderText="Start Date"
-          className="datepicker"
-        />
-        <DatePicker
-          selected={endDate}
-          onChange={(date: Date | null) => setEndDate(date)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          placeholderText="End Date"
-          className="datepicker"
-        />
-      </DateRangeContainer>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
-        <KanbanContainer>
-          {days.map((day, index) => (
-            <DayColumn key={index}>
-              <ColumnTitle>{day}</ColumnTitle>
-              {(plannedItems[day] || []).map((item, idx) => (
-                <ItemCard key={idx}>
-                  <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
-                  <ItemTitle>{item.name}</ItemTitle>
-                  <ItemDetails>{item.vicinity}</ItemDetails>
-                  <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
-                </ItemCard>
-              ))}
-            </DayColumn>
+      <LeftSidebar>
+        <BucketColumn items={dummyItems} addItemToColumn={addItemToColumn} />
+      </LeftSidebar>
+      <MainContent>
+        <TripPlannerTitle>Trip Planner</TripPlannerTitle>
+        <PlannerBoard>
+          {columns.map(column => (
+            <Column 
+              key={column.id} 
+              id={column.id} 
+              items={column.items} 
+              onRemove={() => removeColumn(column.id)} 
+              moveItem={moveItem}
+              addItemToColumn={addItemToColumn}
+              title={column.title}
+            />
           ))}
-        </KanbanContainer>
-        <SidebarContainer>
-          <h2>Starred Items</h2>
-          {starredItems.map((item, index) => (
-            <SidebarItem key={index}>
-              <SidebarItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
-              <SidebarItemTitle>{item.name}</SidebarItemTitle>
-              <SidebarItemDetails>{item.vicinity}</SidebarItemDetails>
-              <SidebarItemDetails>Rating: {item.rating} / 5</SidebarItemDetails>
-              <DaySelect onChange={(e) => handleDaySelect(item, e.target.value)}>
-                <option value="">Select a day</option>
-                {days.map((day, idx) => (
-                  <option key={idx} value={day}>
-                    {day}
-                  </option>
-                ))}
-              </DaySelect>
-            </SidebarItem>
-          ))}
-        </SidebarContainer>
-      </div>
+          <AddColumnButton onClick={addColumn}>Add Column</AddColumnButton>
+        </PlannerBoard>
+        <BackButton to="/">Back to Main Page</BackButton>
+      </MainContent>
     </TripPlannerContainer>
   );
 };
