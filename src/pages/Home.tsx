@@ -8,11 +8,8 @@ import PlacesList from '../components/PlacesList';
 import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
 import { useStarred } from '../components/StarredContext';
-<<<<<<< HEAD
 import { useMap } from '../components/MapContext'; // Import useMap
-=======
 import NavigationBar from '../components/NavigationBar';
->>>>>>> Home-Page
 
 const Container = styled.div<{ sidebarVisible: boolean }>`
   transform: ${props => (props.sidebarVisible ? 'translateX(-150px)' : 'translateX(0)')}; // Move content when sidebar appears
@@ -49,24 +46,14 @@ const Home: React.FC = () => {
   };
 
   return (
-<<<<<<< HEAD
     <Container sidebarVisible={starredItems.length > 0} className='bg-[#182833] h-full flex flex-col items-center gap-y-32 text-white'>
-      <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
-      <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-      <ListsContainer className="h-screen pt-4 font-bold" >
-        <HotelsList hotels={hotels} />
-        <ActivitiesList activities={activities} />
-        <PlacesList places={places} />
-=======
-    <Container sidebarVisible={starredItems.length > 0}>
       <NavigationBar />
       <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
       <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-      <ListsContainer>
+      <ListsContainer className="h-screen pt-4 font-bold" >
         <HotelsList id="hotels-list" hotels={hotels} />
         <ActivitiesList id="activities-list" activities={activities} />
         <PlacesList id="places-to-see-list" places={places} />
->>>>>>> Home-Page
       </ListsContainer>
     </Container>
   );
