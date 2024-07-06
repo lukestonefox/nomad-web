@@ -3,13 +3,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
 import { Link, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-const SidebarContainer = styled.div<{ visible: boolean }>`
+const SidebarContainer = styled.div<{ visible: boolean, navigationBarHeight: number }>`
   position: fixed;
   right: 0;
-  top: 0;
+  top: ${({navigationBarHeight}) => navigationBarHeight + 10}px;
   height: 100%;
   width: 300px;
   background-color: #f4f4f4;
@@ -80,26 +78,18 @@ const NavigationButton = styled(Link)`
 `;
 
 const Sidebar: React.FC = () => {
-  const { starredItems, toggleStarredItem } = useStarred();
   const location = useLocation(); // Use the useLocation hook to get the current path
-
   const isOnTripPlannerPage = location.pathname === '/trip-planner'; // Check if the current path is the trip planner page
+  const { starredItems } = useStarred();
+  const navigationBarHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
 
   return (
-    <SidebarContainer visible={starredItems.length > 0} className='flex flex-col items-center'>
-      <h2 className='text-xl font-bold mb-4'>Starred Items</h2>
+    <SidebarContainer visible={starredItems.length > 0} className='flex flex-col items-center' navigationBarHeight={navigationBarHeight}>
+      <h2 className='mb-4 text-xl font-bold'>Starred Items</h2>
       <div className='flex flex-col items-center'>
         {starredItems.map((item, index) => (
           <StarredItem key={index}>
-            <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
-            <ItemTitle>{item.name}</ItemTitle>
-            <ItemDetails>{item.vicinity}</ItemDetails>
-            <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
-            {!isOnTripPlannerPage && (
-              <UnstarButton onClick={() => toggleStarredItem(item)}>
-                <FontAwesomeIcon icon={faTimes} /> Unstar
-              </UnstarButton>
-            )}
+        
           </StarredItem>
         ))}
       </div>
