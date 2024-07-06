@@ -11,10 +11,6 @@ import { useStarred } from '../components/StarredContext';
 import { useMap } from '../components/MapContext'; // Import useMap
 
 const Container = styled.div<{ sidebarVisible: boolean }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
   transform: ${props => (props.sidebarVisible ? 'translateX(-150px)' : 'translateX(0)')}; // Move content when sidebar appears
   transition: transform 0.3s ease-in-out; // Transition when sidebar appears
 `;
@@ -49,10 +45,10 @@ const Home: React.FC = () => {
   };
 
   return (
-    <Container sidebarVisible={starredItems.length > 0}>
+    <Container sidebarVisible={starredItems.length > 0} className='bg-[#182833] h-full flex flex-col items-center gap-y-32 text-white'>
       <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
       <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-      <ListsContainer>
+      <ListsContainer className="h-screen pt-4 font-bold" >
         <HotelsList hotels={hotels} />
         <ActivitiesList activities={activities} />
         <PlacesList places={places} />
