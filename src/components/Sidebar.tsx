@@ -1,24 +1,24 @@
 // src/components/Sidebar.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
-import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 const SidebarContainer = styled.div<{ visible: boolean }>`
   position: fixed;
   right: 0;
   top: 0;
   height: 100%;
-  width: 300px;
+  width: 300px; /* Ensure sidebar has enough width */
   background-color: #f4f4f4;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
   transform: ${props => (props.visible ? 'translateX(0)' : 'translateX(100%)')};
   transition: transform 0.3s ease-in-out;
   padding: 20px;
   z-index: 1000;
-  overflow-y: auto; /* Enable vertical scrollbar */
+  overflow-y: auto;
 `;
 
 const StarredItem = styled.div`
@@ -60,54 +60,101 @@ const UnstarButton = styled.button`
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   cursor: pointer;
   &:hover {
     background-color: #d9363e;
   }
 `;
 
-const NavigationButton = styled(Link)`
-  display: inline-block;
-  margin-top: 20px;
-  padding: 10px 20px;
+const MoveButton = styled.button`
   background-color: #007bff;
   color: white;
-  text-align: center;
+  border: none;
   border-radius: 5px;
-  text-decoration: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-top: 5px;
   &:hover {
     background-color: #0056b3;
   }
 `;
 
-const Sidebar: React.FC = () => {
-  const { starredItems, toggleStarredItem } = useStarred();
-  const location = useLocation(); // Use the useLocation hook to get the current path
+const NavigationButton = styled(Link)`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
 
-  const isOnTripPlannerPage = location.pathname === '/trip-planner'; // Check if the current path is the trip planner page
+interface SidebarProps {
+  isTripSchedulerPage?: boolean;
+  days?: string[];
+  moveItemToDay?: (item: any, dayIndex: number) => void;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, moveItemToDay }) => {
+  const { starredItems, toggleStarredItem } = useStarred();
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
+
+  const handleMoveClick = (item: any) => {
+    if (selectedDayIndex !== null && moveItemToDay) {
+      moveItemToDay(item, selectedDayIndex);
+    }
+  };
 
   return (
-    <SidebarContainer visible={starredItems.length > 0} className='flex flex-col items-center'>
-      <h2 className='text-xl font-bold mb-4'>Starred Items</h2>
-      <div className='flex flex-col items-center'>
+    <SidebarContainer visible={starredItems.length > 0}>
+      <h2>Starred Items</h2>
+      <div>
         {starredItems.map((item, index) => (
           <StarredItem key={index}>
             <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
             <ItemTitle>{item.name}</ItemTitle>
             <ItemDetails>{item.vicinity}</ItemDetails>
             <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
-            {!isOnTripPlannerPage && (
+            {!isTripSchedulerPage && (
               <UnstarButton onClick={() => toggleStarredItem(item)}>
                 <FontAwesomeIcon icon={faTimes} /> Unstar
               </UnstarButton>
             )}
+            {isTripSchedulerPage && (
+              <div>
+                <select
+                  onChange={(e) => setSelectedDayIndex(parseInt(e.target.value))}
+                  defaultValue=""
+                >
+                  <option value="" disabled>
+                    Select Day
+                  </option>
+                  {days && days.map((day, i) => (
+                    <option key={i} value={i}>
+                      {day}
+                    </option>
+                  ))}
+                </select>
+                <MoveButton onClick={() => handleMoveClick(item)}>
+                  <FontAwesomeIcon icon={faArrowRight} /> Move
+                </MoveButton>
+              </div>
+            )}
           </StarredItem>
         ))}
       </div>
-      <NavigationButton to={isOnTripPlannerPage ? "/" : "/trip-planner"}>
-        {isOnTripPlannerPage ? "Back to Main Page" : "Go to Trip Planner"}
-      </NavigationButton>
+      {!isTripSchedulerPage && (
+        <NavigationButton to="/trip-scheduler">
+          Go to Trip Scheduler
+        </NavigationButton>
+      )}
     </SidebarContainer>
   );
 };
