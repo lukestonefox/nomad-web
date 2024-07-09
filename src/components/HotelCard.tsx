@@ -9,6 +9,7 @@ interface HotelCardProps {
     name: string;
     vicinity: string;
     rating: number;
+    price: number;
   };
 }
 
@@ -49,6 +50,11 @@ const CardRating = styled.p`
   color: #f39c12;
 `;
 
+const CardPrice = styled.p`
+  margin: 8px 0;
+  color: #777;
+`;
+
 const StarButton = styled.button<{ starred: boolean }>`
   background-color: ${props => (props.starred ? '#ffcc00' : '#ccc')};
   color: white;
@@ -77,6 +83,8 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
 
   const rating = hotel.rating > 0 ? `Rating: ${hotel.rating} / 5` : 'No Rating'
 
+  const price = hotel.price > 0 ? `Price: $${hotel.price}` : 'No Price Available'
+  
   return (
     <Card>
       <CardImage src={imageUrl} alt={hotel.name} />
@@ -87,6 +95,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
         <CardTitle>{hotel.name}</CardTitle>
         <CardAddress>{hotel.vicinity}</CardAddress>
         <CardRating>{rating}</CardRating>
+        <CardPrice>{price}</CardPrice>
       </CardContent>
     </Card>
   );
