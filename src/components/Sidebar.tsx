@@ -128,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
                 <select
                   onChange={(e) => setSelectedDayIndex(parseInt(e.target.value))}
                   defaultValue=""
-                  name="select"
+                  title="Select Day to Move Item To"
                 >
                   <option value="" disabled>
                     Select Day
