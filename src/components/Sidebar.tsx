@@ -6,10 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const SidebarContainer = styled.div<{ visible: boolean }>`
+const SidebarContainer = styled.div<{ visible: boolean, navigationBarHeight: number }>`
   position: fixed;
   right: 0;
-  top: 0;
+  top: ${({navigationBarHeight}) => navigationBarHeight + 10}px;
   height: 100%;
   width: 300px; /* Ensure sidebar has enough width */
   background-color: #f4f4f4;
@@ -29,25 +29,6 @@ const StarredItem = styled.div`
   min-width: 260px;
   max-width: 260px;
   margin-bottom: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-`;
-
-const ItemImage = styled.img`
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-`;
-
-const ItemTitle = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  color: #333;
 `;
 
 const ItemDetails = styled.p`
@@ -96,6 +77,20 @@ const NavigationButton = styled(Link)`
   }
 `;
 
+const ItemImage = styled.img`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+`;
+
+const ItemTitle = styled.h3`
+  margin: 0;
+  font-size: 1.2em;
+  color: #333;
+`;
+
 interface SidebarProps {
   isTripSchedulerPage?: boolean;
   days?: string[];
@@ -105,6 +100,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, moveItemToDay }) => {
   const { starredItems, toggleStarredItem } = useStarred();
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
+  const navigationBarHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
 
   const handleMoveClick = (item: any) => {
     if (selectedDayIndex !== null && moveItemToDay) {
@@ -113,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
   };
 
   return (
-    <SidebarContainer visible={starredItems.length > 0}>
+    <SidebarContainer visible={starredItems.length > 0} navigationBarHeight={navigationBarHeight}>
       <h2>Starred Items</h2>
       <div>
         {starredItems.map((item, index) => (
@@ -132,6 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
                 <select
                   onChange={(e) => setSelectedDayIndex(parseInt(e.target.value))}
                   defaultValue=""
+                  title="Select Day to Move Item To"
                 >
                   <option value="" disabled>
                     Select Day

@@ -10,6 +10,7 @@ interface HotelsListProps {
     rating: number;
     price: number;
   }[];
+  id?: string;
 }
 
 const ListContainer = styled.div`
@@ -18,9 +19,9 @@ const ListContainer = styled.div`
   justify-content: center;
 `;
 
-const HotelsList: React.FC<HotelsListProps> = ({ hotels }) => {
+const HotelsList: React.FC<HotelsListProps> = ({ hotels, id }) => {
   return (
-    <div>
+    <div id={id}>
       <h2>Hotels</h2>
       <ListContainer>
         {hotels.map((hotel, index) => (

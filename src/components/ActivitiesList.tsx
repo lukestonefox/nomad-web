@@ -9,6 +9,7 @@ interface ActivitiesListProps {
     vicinity: string;
     rating: number;
   }[];
+  id?: string;
 }
 
 const ListContainer = styled.div`
@@ -17,9 +18,9 @@ const ListContainer = styled.div`
   justify-content: center;
 `;
 
-const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities }) => {
+const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities, id }) => {
   return (
-    <div>
+    <div id={id}>
       <h2>Activities</h2>
       <ListContainer>
         {activities.map((activity, index) => (

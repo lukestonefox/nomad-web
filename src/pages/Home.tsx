@@ -9,6 +9,7 @@ import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
 import { useStarred } from '../components/StarredContext';
 import { useMap } from '../components/MapContext'; // Import useMap
+import NavigationBar from '../components/NavigationBar';
 
 const Container = styled.div<{ sidebarVisible: boolean }>`
   display: flex;
@@ -50,12 +51,13 @@ const Home: React.FC = () => {
 
   return (
     <Container sidebarVisible={starredItems.length > 0}>
+      <NavigationBar />
       <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
       <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
       <ListsContainer>
-        <HotelsList hotels={hotels} />
-        <ActivitiesList activities={activities} />
-        <PlacesList places={places} />
+        <HotelsList id="hotels-list" hotels={hotels} />
+        <ActivitiesList id="activities-list" activities={activities} />
+        <PlacesList id="places-to-see-list" places={places} />
       </ListsContainer>
     </Container>
   );
