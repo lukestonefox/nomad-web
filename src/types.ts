@@ -1,4 +1,5 @@
 // src/types.ts
+
 export interface HotelData {
     imageUrl: string;
     name: string;
