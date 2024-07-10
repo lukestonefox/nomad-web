@@ -46,8 +46,11 @@ const Home: React.FC = () => {
   };
 
   return (
+    <>
+    <div className='mx-7'>
+    <NavigationBar />
+    </div>
     <Container sidebarVisible={starredItems.length > 0} className='bg-[#182833] h-full flex flex-col items-center gap-y-32 text-white'>
-      <NavigationBar />
       <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
       <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
       <ListsContainer className="h-screen pt-4 font-bold" >
@@ -56,6 +59,7 @@ const Home: React.FC = () => {
         <PlacesList id="places-to-see-list" places={places} />
       </ListsContainer>
     </Container>
+    </>
   );
 };
 

@@ -1,46 +1,3 @@
-import { styled } from "styled-components";
-
-const NavigationBarContainer = styled.div`
-    position: sticky;
-    top: 0;
-    left: 0;
-    background-color: #93C5FD;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-    z-index: 1000;
-
-    h1 {
-        font-size: 30px;
-    }
-`
-
-const ButtonGroup = styled.div`
-    display: flex;
-    align-itmes: center;
-
-    button {
-        border: none;
-        color: black;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        background: none;
-    }
-
-    button:hover {
-        color: white;
-        text-decoration: underline;
-    }
-`
-
 const NavigationBar: React.FC = () => {
     const scrollToLocation = (id: string) => {
         const section = document.getElementById(id);
@@ -54,14 +11,14 @@ const NavigationBar: React.FC = () => {
     };
 
     return (
-        <NavigationBarContainer id="navigation-bar">
-            <h1>Nomad</h1>
-            <ButtonGroup>
-                <button type="button" onClick={() => scrollToLocation("hotels-list")}>Hotels</button>
-                <button type="button" onClick={() => scrollToLocation("activities-list")}>Activities</button>
-                <button type="button" onClick={() => scrollToLocation("places-to-see-list")}>Places to See</button>
-            </ButtonGroup>
-        </NavigationBarContainer>
+        <nav className="fixed top-0 z-20 flex justify-between w-full mt-3 p-4 items-center text-white backdrop-blur-lg bg-opacity-70 bg-[#93C5FD] rounded-lg" id="navigation-bar">
+            <h1 className="text-2xl font-extrabold">Nomad</h1>
+            <div className="flex gap-x-6">
+                <button type="button" className="p-2 duration-200 rounded-md hover:bg-blue-400" onClick={() => scrollToLocation("hotels-list")}>Hotels</button>
+                <button type="button" className="p-2 duration-200 rounded-md hover:bg-blue-400" onClick={() => scrollToLocation("activities-list")}>Activities</button>
+                <button type="button" className="p-2 duration-200 rounded-md hover:bg-blue-400" onClick={() => scrollToLocation("places-to-see-list")}>Places to See</button>
+            </div>
+        </nav>
     );
 };
 
