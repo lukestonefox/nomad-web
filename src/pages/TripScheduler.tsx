@@ -223,7 +223,7 @@ const TripScheduler: React.FC = () => {
         Trip Planner
       </Header>
       <MainContent>
-        <Sidebar isTripSchedulerPage days={days} moveItemToDay={moveItemToDay} />
+        <Sidebar visible isTripSchedulerPage days={days} moveItemToDay={moveItemToDay} />
         <SchedulerContainer>
           <DayColumnsWrapper>
             <DayColumnsContainer>

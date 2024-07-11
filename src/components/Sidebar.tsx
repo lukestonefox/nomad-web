@@ -1,4 +1,3 @@
-// src/components/Sidebar.tsx
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
@@ -6,10 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const SidebarContainer = styled.div<{ visible: boolean, navigationBarHeight: number }>`
+const SidebarContainer = styled.div<{ visible: boolean; navigationBarHeight: number }>`
   position: fixed;
   right: 0;
-  top: ${({navigationBarHeight}) => navigationBarHeight + 10}px;
+  top: ${({ navigationBarHeight }) => navigationBarHeight + 10}px;
   height: 100%;
   width: 300px; /* Ensure sidebar has enough width */
   background-color: #f4f4f4;
@@ -95,9 +94,10 @@ interface SidebarProps {
   isTripSchedulerPage?: boolean;
   days?: string[];
   moveItemToDay?: (item: any, dayIndex: number) => void;
+  visible: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, moveItemToDay }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, moveItemToDay, visible }) => {
   const { starredItems, toggleStarredItem } = useStarred();
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
   const navigationBarHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
@@ -109,7 +109,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
   };
 
   return (
-    <SidebarContainer visible={starredItems.length > 0} navigationBarHeight={navigationBarHeight}>
+    <SidebarContainer visible={visible} navigationBarHeight={navigationBarHeight}>
       <h2>Starred Items</h2>
       <div>
         {starredItems.map((item, index) => (
@@ -126,18 +126,19 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
             {isTripSchedulerPage && (
               <div>
                 <select
-                  onChange={(e) => setSelectedDayIndex(parseInt(e.target.value))}
+                  onChange={e => setSelectedDayIndex(parseInt(e.target.value))}
                   defaultValue=""
                   title="Select Day to Move Item To"
                 >
                   <option value="" disabled>
                     Select Day
                   </option>
-                  {days && days.map((day, i) => (
-                    <option key={i} value={i}>
-                      {day}
-                    </option>
-                  ))}
+                  {days &&
+                    days.map((day, i) => (
+                      <option key={i} value={i}>
+                        {day}
+                      </option>
+                    ))}
                 </select>
                 <MoveButton onClick={() => handleMoveClick(item)}>
                   <FontAwesomeIcon icon={faArrowRight} /> Move
@@ -148,9 +149,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
         ))}
       </div>
       {!isTripSchedulerPage && (
-        <NavigationButton to="/trip-scheduler">
-          Go to Trip Scheduler
-        </NavigationButton>
+        <NavigationButton to="/trip-scheduler">Go to Trip Scheduler</NavigationButton>
       )}
     </SidebarContainer>
   );
