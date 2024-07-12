@@ -16,7 +16,7 @@ const Container = styled.div<{ sidebarVisible: boolean }>`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  transform: ${props => (props.sidebarVisible ? 'translateX(-150px)' : 'translateX(0)')}; // Move content when sidebar appears
+  transform: ${props => (props.sidebarVisible ? 'translateX(-149px)' : 'translateX(0)')}; // Move content when sidebar appears
   transition: transform 0.3s ease-in-out; // Transition when sidebar appears
 `;
 
