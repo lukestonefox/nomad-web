@@ -10,12 +10,13 @@ interface ActivitiesListProps {
     price: number;
   }[];
   id?: string;
+  title: string;
 }
 
-const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities, id }) => {
+const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities, id, title }) => {
   return (
-    <div id={id}>
-      <h2 className='justify-end'>Activities</h2>
+    <div className='flex flex-col items-center gap-y-4' id={id}>
+      <h2 className='text-3xl'>{title}</h2>
       <div className='flex flex-wrap justify-center gap-4'>
         {activities.map((activity, index) => (
           <ActivityCard key={index} activity={activity} />

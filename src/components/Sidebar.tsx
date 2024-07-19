@@ -98,9 +98,9 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
   };
 
   return (
-    <SidebarContainer visible={visible} className='fixed top-0 right-0 z-10 flex flex-col items-center px-5 pt-24 bg-[#182833] w-80 h-full shadow-2xl justify-center'>
+    <SidebarContainer visible={visible} className='fixed top-0 right-0 z-10 flex flex-col items-center justify-center h-full px-5 pt-24 shadow-2xl bg-[#121E26] w-80'>
       <h2 className='text-2xl font-extrabold text-white'>Starred Items</h2>
-      <div>
+      <div className='overflow-y-auto'>
         {starredItems.map((item, index) => (
           <StarredItem key={index}>
             <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />

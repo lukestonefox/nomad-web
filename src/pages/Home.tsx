@@ -2,11 +2,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import LocationSelector from '../components/LocationSelector';
-import HotelsList from '../components/HotelsList';
 import ActivitiesList from '../components/ActivitiesList';
 import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
-import { useStarred } from '../components/StarredContext';
 import { useMap } from '../components/MapContext';
 import NavigationBar from '../components/NavigationBar';
 import Sidebar from '../components/Sidebar';
@@ -17,7 +15,6 @@ const Container = styled.div<{ sidebarVisible: boolean }>`
 `;
 
 const Home: React.FC = () => {
-  const { starredItems } = useStarred();
   const { coordinates, setCoordinates, hotels, setHotels, activities, setActivities, places, setPlaces } = useMap();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -54,9 +51,9 @@ const Home: React.FC = () => {
         <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
         <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
         <div className="flex flex-col w-4/5 h-full pt-4 font-bold">
-          <ActivitiesList id="hotels-list" activities={hotels} />
-          <ActivitiesList id="activities-list" activities={activities} />
-          <ActivitiesList id="places-to-see-list" activities={places} />
+          <ActivitiesList title="Hotels" id="hotels-list" activities={hotels} />
+          <ActivitiesList title="Activities" id="activities-list" activities={activities} />
+          <ActivitiesList title="Places" id="places-to-see-list" activities={places} />
         </div>
       </Container>
       <Sidebar visible={isSidebarVisible} />
