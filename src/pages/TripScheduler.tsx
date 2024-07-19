@@ -5,6 +5,7 @@ import NavigationBar from '../components/NavigationBar';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { yellow } from '@mui/material/colors';
 import StarIcon from '@mui/icons-material/Star';
+import AddIcon from '@mui/icons-material/Add';
 
 const TripScheduler: React.FC = () => {
   const { starredItems } = useStarred();
@@ -56,9 +57,9 @@ const TripScheduler: React.FC = () => {
   return (
     <div className='flex flex-col w-full bg-[#182833] h-screen'>
       <NavigationBar onSidebarToggle={handleSidebarToggle} />
-      <div className='flex flex-row w-full mt-16 overflow-y-auto'>
+      <div className='flex flex-row w-full h-full mt-16 overflow-y-hidden'>
         <Sidebar visible isTripSchedulerPage days={days} moveItemToDay={moveItemToDay} />
-        <div className='h-full p-8 pr-80'>
+        <div className='h-full p-8 mb-10 pr-80'>
           <div className='flex flex-row h-full flex-nowrap gap-x-20 scroll'>
             {days.map((day, index) => (
               <div className='w-[300px] h-full p-4 flex flex-col items-center relative overflow-auto shadow-xl bg-black bg-opacity-10 rounded-lg text-white gap-y-3' key={index}>
@@ -87,8 +88,9 @@ const TripScheduler: React.FC = () => {
                 </div>
               </div>
             ))}
-            <div className='w-[300px] h-full p-4 flex flex-col items-center relative overflow-auto shadow-xl justify-center bg-black bg-opacity-10 cursor-pointer text-white text-opacity-15 font-bold text-xl' onClick={addDay}>
-              Add Day
+            <div className='w-[300px] h-full p-4 flex flex-row gap-x-1 items-center relative overflow-auto shadow-xl justify-center bg-black bg-opacity-10 hover:bg-opacity-15 duration-200 cursor-pointer text-white text-opacity-15 font-bold text-xl' onClick={addDay}>
+              <AddIcon />
+              <p>Add Day</p>
             </div>
           </div>
         </div>

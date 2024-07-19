@@ -50,7 +50,7 @@ const Home: React.FC = () => {
       <Container sidebarVisible={isSidebarVisible} className='flex flex-col items-center h-full text-white gap-y-32'>
         <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
         <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-        <div className="flex flex-col w-4/5 h-full pt-4 font-bold">
+        <div className="flex flex-col w-4/5 h-full pt-4 font-bold gap-y-4">
           <ActivitiesList title="Hotels" id="hotels-list" activities={hotels} />
           <ActivitiesList title="Activities" id="activities-list" activities={activities} />
           <ActivitiesList title="Places" id="places-to-see-list" activities={places} />
