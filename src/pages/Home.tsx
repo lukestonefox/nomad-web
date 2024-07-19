@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import LocationSelector from '../components/LocationSelector';
 import HotelsList from '../components/HotelsList';
 import ActivitiesList from '../components/ActivitiesList';
-import PlacesList from '../components/PlacesList';
 import MapComponent from '../components/MapComponent';
 import { fetchHotels, fetchActivities, fetchPlaces, getCoordinates } from '../services/api';
 import { useStarred } from '../components/StarredContext';
@@ -15,11 +14,6 @@ import Sidebar from '../components/Sidebar';
 const Container = styled.div<{ sidebarVisible: boolean }>`
   transform: ${props => (props.sidebarVisible ? 'translateX(-300px)' : 'translateX(0)')}; // Move content when sidebar appears
   transition: transform 0.3s ease-in-out; // Transition when sidebar appears
-`;
-
-const ListsContainer = styled.div`
-  width: 80%;
-  margin-top: 20px;
 `;
 
 const Home: React.FC = () => {
@@ -52,21 +46,21 @@ const Home: React.FC = () => {
   };
 
   return (
-    <>
-      <div className='mx-7'>
+    <div className='bg-[#182833] h-full'>
+      <div className=''>
         <NavigationBar onSidebarToggle={handleSidebarToggle} />
       </div>
-      <Container sidebarVisible={isSidebarVisible} className='bg-[#182833] h-full flex flex-col items-center gap-y-32 text-white'>
+      <Container sidebarVisible={isSidebarVisible} className='flex flex-col items-center h-full text-white gap-y-32'>
         <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
         <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
-        <ListsContainer className="h-screen pt-4 font-bold">
-          <HotelsList id="hotels-list" hotels={hotels} />
+        <div className="flex flex-col w-4/5 h-full pt-4 font-bold">
+          <ActivitiesList id="hotels-list" activities={hotels} />
           <ActivitiesList id="activities-list" activities={activities} />
-          <PlacesList id="places-to-see-list" places={places} />
-        </ListsContainer>
+          <ActivitiesList id="places-to-see-list" activities={places} />
+        </div>
       </Container>
       <Sidebar visible={isSidebarVisible} />
-    </>
+    </div>
   );
 };
 

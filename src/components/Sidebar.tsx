@@ -5,19 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
-const SidebarContainer = styled.div<{ visible: boolean; navigationBarHeight: number }>`
-  position: fixed;
-  right: 0;
-  top: ${({ navigationBarHeight }) => navigationBarHeight + 10}px;
-  height: 100%;
-  width: 300px; /* Ensure sidebar has enough width */
-  background-color: #f4f4f4;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+const SidebarContainer = styled.div<{visible: boolean}>`
   transform: ${props => (props.visible ? 'translateX(0)' : 'translateX(100%)')};
   transition: transform 0.3s ease-in-out;
-  padding: 20px;
-  z-index: 1000;
-  overflow-y: auto;
 `;
 
 const StarredItem = styled.div`
@@ -100,7 +90,6 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, moveItemToDay, visible }) => {
   const { starredItems, toggleStarredItem } = useStarred();
   const [selectedDayIndex, setSelectedDayIndex] = useState<number | null>(null);
-  const navigationBarHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
 
   const handleMoveClick = (item: any) => {
     if (selectedDayIndex !== null && moveItemToDay) {
@@ -109,8 +98,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
   };
 
   return (
-    <SidebarContainer visible={visible} navigationBarHeight={navigationBarHeight}>
-      <h2>Starred Items</h2>
+    <SidebarContainer visible={visible} className='fixed top-0 right-0 z-10 flex flex-col items-center px-5 pt-24 bg-[#182833] w-80 h-full shadow-2xl justify-center'>
+      <h2 className='text-2xl font-extrabold text-white'>Starred Items</h2>
       <div>
         {starredItems.map((item, index) => (
           <StarredItem key={index}>

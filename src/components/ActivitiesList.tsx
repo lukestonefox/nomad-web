@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import ActivityCard from './ActivityCard';
 
 interface ActivitiesListProps {
@@ -8,25 +7,20 @@ interface ActivitiesListProps {
     name: string;
     vicinity: string;
     rating: number;
+    price: number;
   }[];
   id?: string;
 }
 
-const ListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
-
 const ActivitiesList: React.FC<ActivitiesListProps> = ({ activities, id }) => {
   return (
     <div id={id}>
-      <h2>Activities</h2>
-      <ListContainer>
+      <h2 className='justify-end'>Activities</h2>
+      <div className='flex flex-wrap justify-center gap-4'>
         {activities.map((activity, index) => (
           <ActivityCard key={index} activity={activity} />
         ))}
-      </ListContainer>
+      </div>
     </div>
   );
 };

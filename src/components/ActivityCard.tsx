@@ -1,6 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useStarred } from './StarredContext';
+import AddIcon from '@mui/icons-material/Add';
+import StarIcon from '@mui/icons-material/Star';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { yellow } from '@mui/material/colors';
 
 interface ActivityCardProps {
     activity: {
@@ -8,60 +11,9 @@ interface ActivityCardProps {
       name: string;
       vicinity: string;
       rating: number;
+      price: number;
     };
   }
-
-const Card = styled.div`
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin: 16px;
-  position: relative;
-`;
-
-const CardImage = styled.img`
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  background-color: #eee;
-`;
-
-const CardContent = styled.div`
-  padding: 16px;
-`;
-
-const CardTitle = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  color: #333;
-`;
-
-const CardAddress = styled.p`
-  margin: 8px 0;
-  color: #777;
-`;
-
-const CardRating = styled.p`
-  margin: 8px 0;
-  color: #f39c12;
-`;
-
-const StarButton = styled.button<{ starred: boolean }>`
-  background-color: ${props => (props.starred ? '#ffcc00' : '#ccc')};
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  &:hover {
-    background-color: ${props => (props.starred ? '#ffb700' : '#999')};
-  }
-`;
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
   const { starredItems, toggleStarredItem } = useStarred();
@@ -71,25 +23,31 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
     toggleStarredItem(activity);
   };
 
-  const defaultImage = 'https://via.placeholder.com/300x200'; // Default image URL
-  const imageUrl = activity.imageUrl || defaultImage;
-
-  const rating = activity.rating > 0 ? `Rating: ${activity.rating} / 5` : 'No Rating'
+  const imageUrl = activity.imageUrl || 'https://via.placeholder.com/300x200'; // Default image if imageUrl is not provided
+  const rating = activity.rating > 0 ? `${activity.rating}` : 'No Rating'
+  const price = activity.price;
 
   return (
-    <Card>
-      <CardImage src={imageUrl} alt={activity.name} />
-      <StarButton starred={isStarred} onClick={handleToggleStar}>
-        {isStarred ? 'Unadd' : 'Add to Trip'}
-      </StarButton>
-      <CardContent>
-        <CardTitle>{activity.name}</CardTitle>
-        <CardAddress>{activity.vicinity}</CardAddress>
-        <CardRating>{rating}</CardRating>
-      </CardContent>
-    </Card>
+    <div className='w-[300px] overflow-hidden shadow-2xl relative rounded-lg'>
+      <div onClick={handleToggleStar} className={'absolute top-2 right-2 items-center justify-center p-1 rounded-md cursor-pointer ' + (isStarred ? `bg-red-500 hover:bg-red-600` : 'bg-green-500 hover:bg-green-600')}>
+        {isStarred ? <RemoveIcon /> : <AddIcon />}
+      </div>
+      <img className='w-full h-[200px] object-cover' src={imageUrl} alt={activity.name} />
+      <div className='flex flex-col w-full h-full p-4 bg-white bg-opacity-5 gap-y-2'>
+        <div className='flex flex-col'>
+          <p className='text-lg font-semibold'>{activity.name}</p>
+          <p className='text-sm font-normal'>{activity.vicinity}</p>
+        </div>
+        <div className='flex items-center justify-between w-full'>
+          <div className='flex items-center gap-x-1'>
+            <StarIcon sx={{color: yellow[500]}} />
+            <p className='text-yellow-300 text-md'>{rating}</p>
+          </div>
+          {price > 0 && <p className='text-green-500 text-md'> ${price}</p>}
+        </div>
+      </div>
+    </div>
   );
 };
   
   export default ActivityCard;
-  

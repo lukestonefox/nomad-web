@@ -21,8 +21,8 @@ const ListContainer = styled.div`
 
 const HotelsList: React.FC<HotelsListProps> = ({ hotels, id }) => {
   return (
-    <div id={id}>
-      <h2>Hotels</h2>
+    <div className='flex flex-col items-center'id={id}>
+      <h2 className='text-2xl'>Hotels</h2>
       <ListContainer>
         {hotels.map((hotel, index) => (
           <HotelCard key={index} hotel={hotel} />
