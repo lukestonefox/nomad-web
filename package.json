@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@mui/base": "^5.0.0-beta.40",
+    "@mui/icons-material": "^5.16.0",
     "@types/google.maps": "^3.55.9",
     "@types/styled-components": "^5.1.34",
     "amadeus": "^10.0.0",
@@ -24,7 +27,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.24.1",
     "styled-components": "^6.1.11"
   },
   "devDependencies": {

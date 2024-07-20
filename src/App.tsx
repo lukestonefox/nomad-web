@@ -13,7 +13,7 @@ const AppContent: React.FC = () => {
 
   return (
     <>
-      {!isTripSchedulerPage && <Sidebar />}
+      {!isTripSchedulerPage && <Sidebar visible={false}/>}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/trip-scheduler" element={<TripScheduler />} />

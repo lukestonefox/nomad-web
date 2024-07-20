@@ -1,68 +1,42 @@
-import { styled } from "styled-components";
+import React from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link, useLocation } from 'react-router-dom';
 
-const NavigationBarContainer = styled.div`
-    position: sticky;
-    top: 0;
-    left: 0;
-    background-color: #93C5FD;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-    z-index: 1000;
+const NavigationBar: React.FC<{ onSidebarToggle: () => void }> = ({ onSidebarToggle }) => {
+    
+    const location = useLocation().pathname;
 
-    h1 {
-        font-size: 30px;
-    }
-`
-
-const ButtonGroup = styled.div`
-    display: flex;
-    align-itmes: center;
-
-    button {
-        border: none;
-        color: black;
-        padding: 15px 32px;
-        text-align: center;
-        text-decoration: none;
-        display: block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        background: none;
-    }
-
-    button:hover {
-        color: white;
-        text-decoration: underline;
-    }
-`
-
-const NavigationBar: React.FC = () => {
     const scrollToLocation = (id: string) => {
         const section = document.getElementById(id);
         if (section) {
             const barHeight = document.getElementById('navigation-bar')?.offsetHeight || 0;
             window.scrollTo({
-                top:section.offsetTop - (barHeight + 15),
+                top: section.offsetTop - (barHeight + 15),
                 behavior: 'smooth'
             });
         }
     };
 
     return (
-        <NavigationBarContainer id="navigation-bar">
-            <h1>Nomad</h1>
-            <ButtonGroup>
-                <button type="button" onClick={() => scrollToLocation("hotels-list")}>Hotels</button>
-                <button type="button" onClick={() => scrollToLocation("activities-list")}>Activities</button>
-                <button type="button" onClick={() => scrollToLocation("places-to-see-list")}>Places to See</button>
-            </ButtonGroup>
-        </NavigationBarContainer>
+        <header>
+            <nav className="fixed top-0 z-20 flex items-center justify-between w-full px-6 py-4 text-white shadow-lg backdrop-blur-md bg-opacity-70" id="navigation-bar">
+                {/* <h1 className="text-2xl font-extrabold">Nomad</h1> */}
+                <Link to="/">
+                    <img src='../NOMAD.svg' title='logo' width={170} className='duration-100 cursor-pointer hover:opacity-75'/>
+                </Link>
+                <div className="flex items-center pr-6 gap-x-6">
+                    {location !== '/trip-scheduler' && <Link type="button" className="px-3 py-2 duration-200 rounded-md hover:bg-blue-500 hover:bg-opacity-45" to="/trip-scheduler">Trip Scheduler</Link>}
+                    {location !== '/trip-scheduler' && <button type="button" className="px-3 py-2 duration-200 rounded-md hover:bg-blue-500 hover:bg-opacity-45" onClick={() => scrollToLocation("hotels-list")}>Hotels</button>}
+                    {location !== '/trip-scheduler' &&  <button type="button" className="px-3 py-2 duration-200 rounded-md hover:bg-blue-500 hover:bg-opacity-45" onClick={() => scrollToLocation("activities-list")}>Activities</button>}
+                    {location !== '/trip-scheduler' &&  <button type="button" className="px-3 py-2 duration-200 rounded-md hover:bg-blue-500 hover:bg-opacity-45" onClick={() => scrollToLocation("places-to-see-list")}>Places to See</button>}
+                    {location !== '/trip-scheduler' &&  <div className="p-2 duration-200 rounded-md cursor-pointer hover:bg-blue-500 hover:bg-opacity-45" onClick={onSidebarToggle} >
+                        <MenuIcon />
+                    </div>}
+                    {location === '/trip-scheduler' && <Link className="px-3 py-2 duration-200 rounded-md hover:bg-blue-500 hover:bg-opacity-45" to="/">Return Home</Link>}
+                </div>
+            </nav>
+        </header>
     );
 };
 
-export default NavigationBar
+export default NavigationBar;
