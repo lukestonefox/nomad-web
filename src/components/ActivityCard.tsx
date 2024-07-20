@@ -32,10 +32,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
       <div onClick={handleToggleStar} className={'absolute top-2 right-2 items-center justify-center p-1 rounded-md cursor-pointer ' + (isStarred ? `bg-red-500 hover:bg-red-600` : 'bg-green-500 hover:bg-green-600')}>
         {isStarred ? <RemoveIcon /> : <AddIcon />}
       </div>
-      <img className='w-full h-[200px] object-cover' src={imageUrl} alt={activity.name} />
+      <img className='object-cover w-full aspect-video' src={imageUrl} alt={activity.name} />
       <div className='flex flex-col w-full h-full p-4 bg-white bg-opacity-5 gap-y-2'>
         <div className='flex flex-col'>
-          <p className='text-lg font-semibold'>{activity.name}</p>
+          <p className='text-lg font-semibold truncate text-ellipsis'>{activity.name}</p>
           <p className='text-sm font-normal'>{activity.vicinity}</p>
         </div>
         <div className='flex items-center justify-between w-full'>

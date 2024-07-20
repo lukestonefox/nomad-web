@@ -40,13 +40,14 @@ const LocationSelector: React.FC<LocationSelectorProps> = ({ onSelectLocation, m
   }, [map, inputRef]);
 
   return (
-    <div>
+    <div className='flex w-full'>
       <input 
         ref={inputRef}
         type="text"
         value={location}
         onChange={(e) => setLocation(e.target.value)}
-        placeholder="Enter a location" 
+        placeholder="Enter a location"
+        className='items-center py-3 pl-2 mt-3 font-semibold text-black bg-white rounded-md pr-7 w-96 focus:outline-none'
       />
     </div>
   );

@@ -6,6 +6,7 @@ interface StarredItem {
   name: string;
   vicinity: string;
   rating: number;
+  price: number;
 }
 
 interface StarredContextType {

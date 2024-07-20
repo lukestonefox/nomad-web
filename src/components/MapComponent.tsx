@@ -56,7 +56,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationSelected, coordin
     }
   }, [coordinates]);
 
-  return <div className="w-[1000px] h-[1000px] shadow-2xl" ref={mapRef}></div>;
+  return <div className="w-full h-full shadow-2xl" ref={mapRef}></div>;
 };
 
 export default MapComponent;
