@@ -1,40 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useStarred } from '../components/StarredContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import RemoveIcon from '@mui/icons-material/Remove';
+import TrendingFlatIcon from '@mui/icons-material/TrendingFlat';
 
 const SidebarContainer = styled.div<{visible: boolean}>`
   transform: ${props => (props.visible ? 'translateX(0)' : 'translateX(100%)')};
   transition: transform 0.3s ease-in-out;
-`;
-
-const StarredItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-width: 260px;
-  max-width: 260px;
-  margin-bottom: 20px;
-`;
-
-const ItemDetails = styled.p`
-  margin: 8px 0;
-  color: #777;
-`;
-
-const UnstarButton = styled.button`
-  background-color: #ff4d4f;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  &:hover {
-    background-color: #d9363e;
-  }
 `;
 
 const MoveButton = styled.button`
@@ -66,20 +39,6 @@ const NavigationButton = styled(Link)`
   }
 `;
 
-const ItemImage = styled.img`
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
-`;
-
-const ItemTitle = styled.h3`
-  margin: 0;
-  font-size: 1.2em;
-  color: #333;
-`;
-
 interface SidebarProps {
   isTripSchedulerPage?: boolean;
   days?: string[];
@@ -99,18 +58,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
 
   return (
     <SidebarContainer visible={visible} className='fixed top-0 right-0 z-10 flex flex-col items-center justify-center h-full px-5 pt-24 shadow-2xl bg-[#121E26] w-80'>
-      <h2 className='text-2xl font-extrabold text-white'>Starred Items</h2>
+      <h2 className='text-2xl font-bold text-white'>Starred Items</h2>
       <div className='overflow-y-auto'>
         {starredItems.map((item, index) => (
-          <StarredItem key={index}>
-            <ItemImage src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
-            <ItemTitle>{item.name}</ItemTitle>
-            <ItemDetails>{item.vicinity}</ItemDetails>
-            <ItemDetails>Rating: {item.rating} / 5</ItemDetails>
+          <div className='relative flex flex-col items-center w-full p-4 text-white bg-white rounded-md bg-opacity-15' key={index}>
+            <img className='object-cover w-full rounded-md' src={item.imageUrl || 'https://via.placeholder.com/300x150'} alt={item.name} />
+            <div className='flex flex-col gap-y-1'>
+              <p className='font-semibold text-white'>{item.name}</p>
+              <p className='text-sm'>{item.vicinity}</p>
+              <p>Rating: {item.rating} / 5</p>
+            </div>
             {!isTripSchedulerPage && (
-              <UnstarButton onClick={() => toggleStarredItem(item)}>
-                <FontAwesomeIcon icon={faTimes} /> Unstar
-              </UnstarButton>
+            <div onClick={() => toggleStarredItem(item)} className='absolute items-center justify-center p-1 text-white bg-red-500 rounded-md cursor-pointer top-6 right-6 bg-red hover:bg-red-600'>
+              <RemoveIcon />
+            </div>
             )}
             {isTripSchedulerPage && (
               <div>
@@ -130,11 +91,11 @@ const Sidebar: React.FC<SidebarProps> = ({ isTripSchedulerPage = false, days, mo
                     ))}
                 </select>
                 <MoveButton onClick={() => handleMoveClick(item)}>
-                  <FontAwesomeIcon icon={faArrowRight} /> Move
+                  <TrendingFlatIcon /> Move
                 </MoveButton>
               </div>
             )}
-          </StarredItem>
+          </div>
         ))}
       </div>
       {!isTripSchedulerPage && (

@@ -43,7 +43,7 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className='bg-[#182833] h-full'>
+    <div className='bg-[#182833] h-full pb-4'>
       <div className=''>
         <NavigationBar onSidebarToggle={handleSidebarToggle} />
       </div>
@@ -51,9 +51,9 @@ const Home: React.FC = () => {
         <LocationSelector onSelectLocation={handleSelectLocation} map={map} />
         <MapComponent onLocationSelected={handleSelectLocation} coordinates={coordinates} onMapLoad={setMap} />
         <div className="flex flex-col w-4/5 h-full pt-4 font-bold gap-y-4">
-          <ActivitiesList title="Hotels" id="hotels-list" activities={hotels} />
-          <ActivitiesList title="Activities" id="activities-list" activities={activities} />
-          <ActivitiesList title="Places" id="places-to-see-list" activities={places} />
+          <ActivitiesList title="Hotels" id="#hotels-list" activities={hotels} />
+          <ActivitiesList title="Activities" id="#activities-list" activities={activities} />
+          <ActivitiesList title="Places" id="#places-to-see-list" activities={places} />
         </div>
       </Container>
       <Sidebar visible={isSidebarVisible} />
